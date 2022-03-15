@@ -42,7 +42,7 @@ http.createServer(function(request, response){
 	if (request.url == "/characters"){
 		col = "characters";
 	} 
-	else if (request.url == "/itemss"){
+	else if (request.url == "/items"){
 		col = "items";
 	}
 	else {
@@ -50,12 +50,13 @@ http.createServer(function(request, response){
 		return;
 	}
 
-	let characters = db.collection("characters").find();
+	let col_data = db.collection(col).find();
 
-	characters.toArray(function(err, data){
-		let characters_string = JSON.stringify(data);
-		response.end(characters_string);
+	col_data.toArray(function(err, data){
+		let string = JSON.stringify(data);
+	response.end(string);
 	});
+
 	
 }).listen(1900);
 
