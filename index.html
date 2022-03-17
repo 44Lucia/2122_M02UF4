@@ -1,44 +1,53 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html>
-<head><title>TOO FAST FAMILY HD</title>
+
+<head>
+	<title>mongodb</title>
 
 </head>
 
 <body>
 
-	<h1>WELCOME TO TFFHD: THE WEB APP</h1>
+<header>
+	<h1>Too Fast Family HD: The Web App</h1>
+</header>
 
-	<main>
-	<section id ="characters">
-		<ul id="characters-list">
-		
-		</ul>
-	</section>
-	<section id="items">
-		<ul id="items-list">
- 
- 		</ul>
-	</section>
-	</main>
+<main>
+<section id="characters">
+	<h1>Characters:</h1>
+	<ul id="characters-list">
+	
+	</ul>
+</section>
 
-	<script>
+<section id="items">
+	<h1>Items:</h1>
+	<ul id="items-list">
+
+	</ul>
+</section>
+
+</main>
+<script>
 	function write_characters_list (data){
 		let list = "";
-
-		for (let i = 0; i < data.length; i++){
-			list += "<li>"+data[i].name + "</li>";
+		for(let i=0; i<data.length; i++) {
+			list += "<li>"+data[i].name+"</li>";
 		}
-
 		document.getElementById("characters-list").innerHTML = list;
 	}
 
-		let characters_interval = setInterval(function(){
-			fetch("/characters")
-				.then(response => response.json())
-				.then(data => write_characters_list(data));
+	let characters_interval= setInterval(function() {
+		fetch("/characters")
+		.then(response => response.json())
+		.then(data => write_characters_list(data));
+	}());
 
-		}, 2000);
+	characters_interval= setInterval(function() {
+		fetch("/characters")
+		.then(response => response.json())
+		.then(data => write_characters_list(data));
+	}, 2000);
 
 
 	function write_items_list (data){
@@ -46,21 +55,24 @@
  
         for (let i = 0; i < data.length; i++){
         	list += "<li>"+data[i].name + "</li>";
-        }
- 
-        document.getElementById("items-list").innerHTML = list;
+       	}
+		document.getElementById("items-list").innerHTML = list;
     }
 
-		let items_interval = setInterval(function(){
-			fetch("/items")
-        		.then(response => response.json())
-            	.then(data => write_items_list(data));
- 
-    	}, 2000);
+	let items_interval= setInterval(function() {
+		fetch("/items")
+		.then(response => response.json())
+		.then(data => write_items_list(data));
+	}());
+
+	items_interval= setInterval(function() {
+		fetch("/items")
+		.then(response => response.json())
+		.then(data => write_items_list(data));
+	}, 2000);
 
 
-	</script>
-
+</script>
 
 </body>
 
