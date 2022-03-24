@@ -5,23 +5,20 @@ let mongo_client = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectID;
 
 let url = "mongodb://localhost/";
-
 let db;
 let fs = require("fs");
-
 console.log("Iniciando Script mongo_http");
 
 mongo_client.connect(url, function(error,conn){
-	console.log("Dentro de Mongo");
+	console.log("Estas dentro de Mongo");
 	if (error){
-		console.log("Esto no furula TwT");
+		console.log("ERROR");
 		return;
 	}
 	db = conn.db("tffhd");
 });
 
-function send_data_list(req ,res)
-{
+function send_data_list(db, req, res) {
 	let col= "";
 
 	if (req.url == "/characters") {
@@ -44,6 +41,8 @@ function send_data_list(req ,res)
 http.createServer(function(req, res) {
 	res.writeHead(200);
 
+	let url = req.url.split("/");
+
 	if (req.url == "/") {
 		fs.readFile("index.html",function(err, data){
 			res.writeHead(200, {"Content-Type":"text/html"});
@@ -51,32 +50,36 @@ http.createServer(function(req, res) {
 		});
 		return;
 	}
-
-	let url = req.url.split("/");
-	console.log(url);
 	
-	if (url.length == 2){
-		send_data_list(req,res);
+	if(url.length == 2) {
+		send_data_list(db, req, res);
 		return;
 	}
+
 	else{
-		if (url[2].length != 24){
-			res.end();
+		if (url[2].length != 24) {
+			res.end(); 
 			return;
 		}
-		if(url[1] == "characters"){
+
+		if (url[1] == "characters") {
 			let obj_id = new ObjectId(url[2]);
-			let col_data = db.collection("characters").find({"_id":obj_id});
+			let col_data = db.collection("characters").find({"_id":obj_id},{projection: {_id:1, name:1} });
 		
-			col_data.toArray(function(err, data) {
-	         	let string = JSON.stringify(data);
-
-    	      	res.end(string);
-     		});
+			col_data.toArray(function(err, data){
+				let string = JSON.stringify(data);
+				res.end(string);
+			});	
 		}
-		else if (url[1] == "items"){
-
+		else if (url[1] == "items") {
+			let obj_id = new ObjectId(url[2]);
+			let col_data = db.collection("items").find({"_id":obj_id},{projection: {_id:1, name:1} });
+		
+			col_data.toArray(function(err, data){
+				let string = JSON.stringify(data);
+				res.end(string);
+			});
 		}
 	}
 
-}).listen(1909);
+}).listen(1200);
