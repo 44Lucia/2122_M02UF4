@@ -86,5 +86,9 @@ http.createServer(function(req, res) {
 			db.collection("characters").deleteOne({"id_character":parseInt(url[2])});
 			res.end("BORRADO");
 		}
+		else if (url[1] == "delete"){
+			db.collection("items").deleteOne({"id_item":parseInt(url[2])});
+			res.end("ELIMINADO");
+		}
 
 }).listen(1400);
